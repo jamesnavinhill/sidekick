@@ -11,9 +11,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     sessionsTable: schema.sessions,
     verificationTokensTable: schema.verificationTokens,
   }),
+  trustHost: true,
   providers: [
     Resend({
-      from: "auth@resend.dev",
+      from: process.env.RESEND_FROM || "auth@mail.navinhill.com",
       apiKey: process.env.RESEND_API_KEY,
     }),
   ],

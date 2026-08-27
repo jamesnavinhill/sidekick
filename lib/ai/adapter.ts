@@ -25,16 +25,25 @@ export class GeminiProvider implements AIProvider {
     
     for (const base64 of base64Images) {
        const response = await ai.models.generateContent({
-         model: 'gemini-3.5-flash',
+         model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
          contents: [
             prompt,
             {
                inlineData: {
                   data: base64,
-                  mimeType: 'image/jpeg', // we assume jpeg/png
+                  mimeType: 'image/jpeg',
                }
             }
-         ]
+         ],
+         config: {
+            safetySettings: [
+               { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+               { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+               { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+               { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+               { category: 'HARM_CATEGORY_CIVIC_INTEGRITY', threshold: 'BLOCK_NONE' },
+            ]
+         }
        });
        results.push(response.text || 'No description generated.');
     }

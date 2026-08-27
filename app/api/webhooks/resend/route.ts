@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     if (imageAttachments.length === 0) {
       // Send bounce email
       await resend.emails.send({
-        from: 'Move-out Assistant <onboarding@resend.dev>',
+        from: process.env.RESEND_FROM || 'Sidekick <reports@mail.navinhill.com>',
         to: sender,
         subject: 'Re: Move-out Inspection - No Images Found',
         text: 'We received your email, but no valid images were found attached. Please attach images to generate a report.'
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
 
     // Email back
     await resend.emails.send({
-      from: 'Move-out Assistant <onboarding@resend.dev>',
+      from: process.env.RESEND_FROM || 'Sidekick <reports@mail.navinhill.com>',
       to: sender,
       subject: 'Move-out Inspection Report',
       html: `

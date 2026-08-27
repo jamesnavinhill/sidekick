@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     // Send Email
     if (session.user.email) {
       await resend.emails.send({
-        from: 'Move-out Assistant <onboarding@resend.dev>',
+        from: process.env.RESEND_FROM || 'Sidekick <reports@mail.navinhill.com>',
         to: session.user.email,
         subject: 'Move-out Inspection Report',
         html: `
