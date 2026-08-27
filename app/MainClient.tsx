@@ -11,6 +11,8 @@ import {
   Presentation,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  Check,
   X, 
   CheckCircle2, 
   Building2, 
@@ -20,7 +22,8 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Sun,
-  Moon
+  Moon,
+  Cpu
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -42,6 +45,42 @@ type Result = {
   base64Data?: string;
   description: string;
 }
+
+const MODEL_OPTIONS = [
+  {
+    group: "Default Providers",
+    items: [
+      { id: "gemini", name: "Google Gemini (GenAI)", badge: "Google" },
+      { id: "openai-compatible", name: "Custom OpenAI Compatible", badge: "Custom" },
+    ]
+  },
+  {
+    group: "Cloudflare Workers AI (JAMI STUDIO)",
+    items: [
+      { id: "cf-jami-zai-org-glm-5-3-flash", name: "GLM 5.3 Flash", badge: "Zhipu AI" },
+      { id: "cf-jami-qwen-qwen3-8-27b", name: "Qwen 3.8 27B", badge: "Alibaba" },
+      { id: "cf-jami-moondream-moondream3-1-9b-a2b", name: "Moondream 3.1 9B", badge: "Moondream" },
+      { id: "cf-jami-moonshotai-kimi-k2-7-code", name: "Kimi K2.7 Code", badge: "Moonshot" },
+      { id: "cf-jami-moonshotai-kimi-k2-6", name: "Kimi K2.6", badge: "Moonshot" },
+      { id: "cf-jami-google-gemma-4-26b-a4b-it", name: "Gemma 4 26B", badge: "Google" },
+      { id: "cf-jami-meta-llama-4-scout-17b-16e-instruct", name: "Llama 4 Scout 17B", badge: "Meta" },
+      { id: "cf-jami-meta-llama-3-2-11b-vision-instruct", name: "Llama 3.2 11B Vision", badge: "Meta" },
+    ]
+  },
+  {
+    group: "Cloudflare Workers AI (YRKA IO)",
+    items: [
+      { id: "cf-yrka-zai-org-glm-5-3-flash", name: "GLM 5.3 Flash", badge: "Zhipu AI" },
+      { id: "cf-yrka-qwen-qwen3-8-27b", name: "Qwen 3.8 27B", badge: "Alibaba" },
+      { id: "cf-yrka-moondream-moondream3-1-9b-a2b", name: "Moondream 3.1 9B", badge: "Moondream" },
+      { id: "cf-yrka-moonshotai-kimi-k2-7-code", name: "Kimi K2.7 Code", badge: "Moonshot" },
+      { id: "cf-yrka-moonshotai-kimi-k2-6", name: "Kimi K2.6", badge: "Moonshot" },
+      { id: "cf-yrka-google-gemma-4-26b-a4b-it", name: "Gemma 4 26B", badge: "Google" },
+      { id: "cf-yrka-meta-llama-4-scout-17b-16e-instruct", name: "Llama 4 Scout 17B", badge: "Meta" },
+      { id: "cf-yrka-meta-llama-3-2-11b-vision-instruct", name: "Llama 3.2 11B Vision", badge: "Meta" },
+    ]
+  }
+]
 
 function getImageSrc(item?: { imageUrl?: string; base64?: string; base64Data?: string }) {
   if (!item) return ''
@@ -65,7 +104,6 @@ function cleanInspectionText(raw: string): string {
     } catch (e) {}
   }
   
-  // Clean thinking blocks and trailing JSON residue
   text = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim()
   text = text.replace(/^"|"$/g, '').replace(/\\n/g, '\n').replace(/\\"/g, '"').trim()
   return text
@@ -77,6 +115,14 @@ export function MainClient() {
   
   // Panel collapse
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
+
+  // Property Dropdown open state
+  const [propMenuOpen, setPropMenuOpen] = React.useState(false)
+  const propMenuRef = React.useRef<HTMLDivElement>(null)
+
+  // Model Dropdown in Settings open state
+  const [modelMenuOpen, setModelMenuOpen] = React.useState(false)
+  const modelMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Selected Property
   const [selectedPropertyId, setSelectedPropertyId] = React.useState<string>(SEEDED_PROPERTIES[0].id)
@@ -97,6 +143,20 @@ export function MainClient() {
   const [systemPrompt, setSystemPrompt] = React.useState("")
   const [activeProvider, setActiveProvider] = React.useState("cf-jami-qwen-qwen3-8-27b")
   const [settingsOpen, setSettingsOpen] = React.useState(false)
+
+  // Close menus on click outside
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (propMenuRef.current && !propMenuRef.current.contains(event.target as Node)) {
+        setPropMenuOpen(false)
+      }
+      if (modelMenuRef.current && !modelMenuRef.current.contains(event.target as Node)) {
+        setModelMenuOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   // Initialize theme
   React.useEffect(() => {
@@ -132,7 +192,8 @@ export function MainClient() {
   }, [])
 
   // Property Selection Handler
-  const handlePropertyChange = (propertyId: string) => {
+  const handlePropertySelect = (propertyId: string) => {
+    setPropMenuOpen(false)
     if (propertyId === 'new-custom') {
       setIsCustomMode(true)
       setSelectedPropertyId('new-custom')
@@ -253,12 +314,15 @@ export function MainClient() {
     }
   }
 
+  const currentProperty = SEEDED_PROPERTIES.find(p => p.id === selectedPropertyId)
+  const currentModelObj = MODEL_OPTIONS.flatMap(g => g.items).find(m => m.id === activeProvider)
+
   return (
     <div className="h-screen w-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans flex flex-col">
       
       {/* ========================================================================= */}
       {/* 1. HEADER (ICONS ONLY EXCEPT THE PROPERTY SELECTOR & SLIDESHOW CENTER NAV) */}
-      {/* Left: [Toggle Input] | [Property Selector] */}
+      {/* Left: [Toggle Input] | [Custom Styled Property Selector] */}
       {/* Center: < 1 / 11 > (Slideshow Mode Only) */}
       {/* Right: [Slideshow/Card/Grid] | [Theme Toggle (Sun/Moon)] | [Settings] */}
       {/* ========================================================================= */}
@@ -278,29 +342,72 @@ export function MainClient() {
             {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeftOpen className="w-4 h-4" />}
           </Button>
 
-          {/* Property Selector */}
-          <div className="flex items-center gap-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2.5 py-1 shadow-2xs">
-            <Building2 className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 shrink-0" />
-            <select
-              id="property-select"
-              aria-label="Select Property"
-              value={selectedPropertyId}
-              onChange={(e) => handlePropertyChange(e.target.value)}
-              className="bg-transparent text-xs text-zinc-900 dark:text-zinc-200 font-medium focus:outline-none cursor-pointer pr-1"
+          {/* Custom Styled Property Selector Dropdown */}
+          <div className="relative" ref={propMenuRef}>
+            <button
+              onClick={() => setPropMenuOpen(prev => !prev)}
+              className="flex items-center gap-2 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 rounded-md px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-200 shadow-2xs transition-colors"
             >
-              <optgroup label="Seeded Inspection Reports">
-                {SEEDED_PROPERTIES.map(p => (
-                  <option key={p.id} value={p.id} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">
-                    {p.name} ({p.modelLabel})
-                  </option>
-                ))}
-              </optgroup>
-              <optgroup label="Custom Walkthrough">
-                <option value="new-custom" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">
-                  + New Property Walkthrough...
-                </option>
-              </optgroup>
-            </select>
+              <Building2 className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 shrink-0" />
+              <span className="truncate max-w-[200px] sm:max-w-[280px]">
+                {selectedPropertyId === 'new-custom' 
+                  ? '+ New Walkthrough' 
+                  : `${currentProperty?.name} (${currentProperty?.modelLabel})`}
+              </span>
+              <ChevronDown className="w-3 h-3 text-zinc-400 shrink-0 opacity-70" />
+            </button>
+
+            {/* Floating Menu with subtle zinc styling (NO stock blue) */}
+            <AnimatePresence>
+              {propMenuOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 4, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                  transition={{ duration: 0.12 }}
+                  className="absolute left-0 top-full mt-1.5 w-80 max-h-[380px] overflow-y-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl p-1.5 z-50 flex flex-col gap-1"
+                >
+                  <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                    Seeded Inspection Reports
+                  </div>
+                  
+                  {SEEDED_PROPERTIES.map(p => {
+                    const isSelected = selectedPropertyId === p.id
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => handlePropertySelect(p.id)}
+                        className={`flex items-center justify-between w-full px-2.5 py-2 rounded-lg text-left text-xs transition-colors ${
+                          isSelected 
+                            ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-medium' 
+                            : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'
+                        }`}
+                      >
+                        <div className="flex flex-col min-w-0 pr-2">
+                          <span className="truncate">{p.name}</span>
+                          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate">{p.modelLabel}</span>
+                        </div>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-zinc-900 dark:text-zinc-100 shrink-0" />}
+                      </button>
+                    )
+                  })}
+
+                  <div className="my-1 border-t border-zinc-100 dark:border-zinc-800" />
+                  
+                  <button
+                    onClick={() => handlePropertySelect('new-custom')}
+                    className={`flex items-center justify-between w-full px-2.5 py-2 rounded-lg text-left text-xs transition-colors ${
+                      selectedPropertyId === 'new-custom'
+                        ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-medium'
+                        : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'
+                    }`}
+                  >
+                    <span className="font-medium">+ New Property Walkthrough...</span>
+                    {selectedPropertyId === 'new-custom' && <Check className="w-3.5 h-3.5 text-zinc-900 dark:text-zinc-100 shrink-0" />}
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>
@@ -412,38 +519,72 @@ export function MainClient() {
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Controls the structural format, brevity, and chargeback focus of descriptions.</p>
                 </div>
                 
-                <div className="space-y-1.5 shrink-0">
+                {/* Custom Styled Model Provider Selector (NO stock blue) */}
+                <div className="space-y-1.5 shrink-0 relative" ref={modelMenuRef}>
                   <Label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Default Model Provider</Label>
-                  <select 
-                    className="flex h-9 w-full rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-1.5 text-xs text-zinc-800 dark:text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-700"
-                    value={activeProvider}
-                    onChange={e => setActiveProvider(e.target.value)}
+                  
+                  <button
+                    type="button"
+                    onClick={() => setModelMenuOpen(prev => !prev)}
+                    className="flex items-center justify-between w-full h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-2 text-xs text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors shadow-2xs"
                   >
-                    <optgroup label="Default Providers">
-                      <option value="gemini">Google Gemini (GenAI)</option>
-                      <option value="openai-compatible">Custom OpenAI Compatible</option>
-                    </optgroup>
-                    <optgroup label="Cloudflare Workers AI (JAMI STUDIO)">
-                      <option value="cf-jami-zai-org-glm-5-3-flash">JAMI · GLM 5.3 Flash (@cf/zai-org/glm-5.3-flash)</option>
-                      <option value="cf-jami-qwen-qwen3-8-27b">JAMI · Qwen 3.8 27B (@cf/qwen/qwen3.8-27b)</option>
-                      <option value="cf-jami-moondream-moondream3-1-9b-a2b">JAMI · Moondream 3.1 9B (@cf/moondream/moondream3.1-9B-A2B)</option>
-                      <option value="cf-jami-moonshotai-kimi-k2-7-code">JAMI · Kimi K2.7 Code (@cf/moonshotai/kimi-k2.7-code)</option>
-                      <option value="cf-jami-moonshotai-kimi-k2-6">JAMI · Kimi K2.6 (@cf/moonshotai/kimi-k2.6)</option>
-                      <option value="cf-jami-google-gemma-4-26b-a4b-it">JAMI · Gemma 4 26B (@cf/google/gemma-4-26b-a4b-it)</option>
-                      <option value="cf-jami-meta-llama-4-scout-17b-16e-instruct">JAMI · Llama 4 Scout 17B (@cf/meta/llama-4-scout-17b-16e-instruct)</option>
-                      <option value="cf-jami-meta-llama-3-2-11b-vision-instruct">JAMI · Llama 3.2 11B Vision (@cf/meta/llama-3.2-11b-vision-instruct)</option>
-                    </optgroup>
-                    <optgroup label="Cloudflare Workers AI (YRKA IO)">
-                      <option value="cf-yrka-zai-org-glm-5-3-flash">YRKA · GLM 5.3 Flash (@cf/zai-org/glm-5.3-flash)</option>
-                      <option value="cf-yrka-qwen-qwen3-8-27b">YRKA · Qwen 3.8 27B (@cf/qwen/qwen3.8-27b)</option>
-                      <option value="cf-yrka-moondream-moondream3-1-9b-a2b">YRKA · Moondream 3.1 9B (@cf/moondream/moondream3.1-9B-A2B)</option>
-                      <option value="cf-yrka-moonshotai-kimi-k2-7-code">YRKA · Kimi K2.7 Code (@cf/moonshotai/kimi-k2.7-code)</option>
-                      <option value="cf-yrka-moonshotai-kimi-k2-6">YRKA · Kimi K2.6 (@cf/moonshotai/kimi-k2.6)</option>
-                      <option value="cf-yrka-google-gemma-4-26b-a4b-it">YRKA · Gemma 4 26B (@cf/google/gemma-4-26b-a4b-it)</option>
-                      <option value="cf-yrka-meta-llama-4-scout-17b-16e-instruct">YRKA · Llama 4 Scout 17B (@cf/meta/llama-4-scout-17b-16e-instruct)</option>
-                      <option value="cf-yrka-meta-llama-3-2-11b-vision-instruct">YRKA · Llama 3.2 11B Vision (@cf/meta/llama-3.2-11b-vision-instruct)</option>
-                    </optgroup>
-                  </select>
+                    <div className="flex items-center gap-2 truncate">
+                      <Cpu className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                      <span className="font-medium">{currentModelObj?.name || activeProvider}</span>
+                      {currentModelObj?.badge && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                          {currentModelObj.badge}
+                        </span>
+                      )}
+                    </div>
+                    <ChevronDown className="w-3.5 h-3.5 text-zinc-400 shrink-0 opacity-70" />
+                  </button>
+
+                  <AnimatePresence>
+                    {modelMenuOpen && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 4, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                        transition={{ duration: 0.12 }}
+                        className="absolute left-0 bottom-full mb-1.5 w-full max-h-[260px] overflow-y-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl p-1.5 z-50 flex flex-col gap-1"
+                      >
+                        {MODEL_OPTIONS.map(group => (
+                          <div key={group.group} className="flex flex-col gap-0.5">
+                            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                              {group.group}
+                            </div>
+                            {group.items.map(item => {
+                              const isSelected = activeProvider === item.id
+                              return (
+                                <button
+                                  type="button"
+                                  key={item.id}
+                                  onClick={() => {
+                                    setActiveProvider(item.id)
+                                    setModelMenuOpen(false)
+                                  }}
+                                  className={`flex items-center justify-between w-full px-2.5 py-1.5 rounded-lg text-left text-xs transition-colors ${
+                                    isSelected 
+                                      ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white font-medium' 
+                                      : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/60'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span>{item.name}</span>
+                                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+                                      {item.badge}
+                                    </span>
+                                  </div>
+                                  {isSelected && <Check className="w-3.5 h-3.5 text-zinc-900 dark:text-zinc-100 shrink-0" />}
+                                </button>
+                              )
+                            })}
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
