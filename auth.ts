@@ -10,6 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     accountsTable: schema.accounts,
     sessionsTable: schema.sessions,
     verificationTokensTable: schema.verificationTokens,
+  }),
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "sidekick-super-secret-auth-key-2026-secure",
   trustHost: true,
   providers: [
