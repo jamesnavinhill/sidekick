@@ -2,7 +2,14 @@ import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
 
-let connectionString = process.env.DATABASE_URL || process.env.NEON_POOLING || process.env.NEON_NON_POOLING || 'postgres://mock:mock@localhost:5432/mock';
+let connectionString = 
+  process.env.DATABASE_URL || 
+  process.env.NEON_POOLING || 
+  process.env.NEON_NON_POOLING || 
+  process.env.POSTGRES_URL || 
+  process.env.POSTGRES_PRISMA_URL || 
+  process.env.POSTGRES_URL_NON_POOLING ||
+  'postgres://mock:mock@localhost:5432/mock';
 let sql;
 try {
   sql = neon(connectionString);
