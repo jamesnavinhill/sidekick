@@ -164,8 +164,30 @@ export function MainClient() {
                   value={activeProvider}
                   onChange={e => setActiveProvider(e.target.value)}
                 >
-                  <option value="gemini">Google Gemini</option>
-                  <option value="openai-compatible">Custom OpenAI Compatible</option>
+                  <optgroup label="Default Providers">
+                    <option value="gemini">Google Gemini (GenAI)</option>
+                    <option value="openai-compatible">Custom OpenAI Compatible</option>
+                  </optgroup>
+                  <optgroup label="Cloudflare Workers AI (JAMI STUDIO)">
+                    <option value="cf-jami-zai-org-glm-5-3-flash">JAMI · GLM 5.3 Flash (@cf/zai-org/glm-5.3-flash)</option>
+                    <option value="cf-jami-qwen-qwen3-8-27b">JAMI · Qwen 3.8 27B (@cf/qwen/qwen3.8-27b)</option>
+                    <option value="cf-jami-moondream-moondream3-1-9b-a2b">JAMI · Moondream 3.1 9B (@cf/moondream/moondream3.1-9B-A2B)</option>
+                    <option value="cf-jami-moonshotai-kimi-k2-7-code">JAMI · Kimi K2.7 Code (@cf/moonshotai/kimi-k2.7-code)</option>
+                    <option value="cf-jami-moonshotai-kimi-k2-6">JAMI · Kimi K2.6 (@cf/moonshotai/kimi-k2.6)</option>
+                    <option value="cf-jami-google-gemma-4-26b-a4b-it">JAMI · Gemma 4 26B (@cf/google/gemma-4-26b-a4b-it)</option>
+                    <option value="cf-jami-meta-llama-4-scout-17b-16e-instruct">JAMI · Llama 4 Scout 17B (@cf/meta/llama-4-scout-17b-16e-instruct)</option>
+                    <option value="cf-jami-meta-llama-3-2-11b-vision-instruct">JAMI · Llama 3.2 11B Vision (@cf/meta/llama-3.2-11b-vision-instruct)</option>
+                  </optgroup>
+                  <optgroup label="Cloudflare Workers AI (YRKA IO)">
+                    <option value="cf-yrka-zai-org-glm-5-3-flash">YRKA · GLM 5.3 Flash (@cf/zai-org/glm-5.3-flash)</option>
+                    <option value="cf-yrka-qwen-qwen3-8-27b">YRKA · Qwen 3.8 27B (@cf/qwen/qwen3.8-27b)</option>
+                    <option value="cf-yrka-moondream-moondream3-1-9b-a2b">YRKA · Moondream 3.1 9B (@cf/moondream/moondream3.1-9B-A2B)</option>
+                    <option value="cf-yrka-moonshotai-kimi-k2-7-code">YRKA · Kimi K2.7 Code (@cf/moonshotai/kimi-k2.7-code)</option>
+                    <option value="cf-yrka-moonshotai-kimi-k2-6">YRKA · Kimi K2.6 (@cf/moonshotai/kimi-k2.6)</option>
+                    <option value="cf-yrka-google-gemma-4-26b-a4b-it">YRKA · Gemma 4 26B (@cf/google/gemma-4-26b-a4b-it)</option>
+                    <option value="cf-yrka-meta-llama-4-scout-17b-16e-instruct">YRKA · Llama 4 Scout 17B (@cf/meta/llama-4-scout-17b-16e-instruct)</option>
+                    <option value="cf-yrka-meta-llama-3-2-11b-vision-instruct">YRKA · Llama 3.2 11B Vision (@cf/meta/llama-3.2-11b-vision-instruct)</option>
+                  </optgroup>
                 </select>
               </div>
             </div>

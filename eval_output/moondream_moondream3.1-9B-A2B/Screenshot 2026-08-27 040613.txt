@@ -1,0 +1,1 @@
+[ERROR]: [{"message":"AiError: Bad input: Error: Type mismatch of '/image', 'string' not in 'array','binary' (acfc238b-e2b2-48f8-ba1d-77bd02efe35e)","code":5006}]
