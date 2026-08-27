@@ -1,0 +1,32 @@
+import NextAuth from "next-auth"
+import Resend from "next-auth/providers/resend"
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import { db } from "./lib/db"
+import * as schema from "./lib/db/schema"
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: DrizzleAdapter(db, {
+    usersTable: schema.users,
+    accountsTable: schema.accounts,
+    sessionsTable: schema.sessions,
+    verificationTokensTable: schema.verificationTokens,
+  }),
+  providers: [
+    Resend({
+      from: "auth@resend.dev",
+      apiKey: process.env.RESEND_API_KEY,
+    }),
+  ],
+  callbacks: {
+    async signIn({ user }) {
+      const allowed = process.env.AUTHORIZED_EMAIL;
+      if (allowed && user.email !== allowed) {
+        return false;
+      }
+      return true;
+    }
+  },
+  pages: {
+    signIn: '/auth/signin',
+  }
+})
