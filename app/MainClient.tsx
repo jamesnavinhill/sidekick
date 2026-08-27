@@ -59,18 +59,41 @@ export function MainClient() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'image/*': [] },
     onDrop: async (acceptedFiles) => {
-      const fileToB64 = (file: File) => new Promise<string>((resolve) => {
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          const res = reader.result as string
-          resolve(res.split(',')[1]) // Get just base64
-        }
-        reader.readAsDataURL(file)
-      })
+      const compressAndToB64 = (file: File): Promise<string> => {
+        return new Promise((resolve) => {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            const img = new window.Image()
+            img.onload = () => {
+              const canvas = document.createElement('canvas')
+              let width = img.width
+              let height = img.height
+              const maxDim = 1600
+              if (width > maxDim || height > maxDim) {
+                if (width > height) {
+                  height = Math.round((height * maxDim) / width)
+                  width = maxDim
+                } else {
+                  width = Math.round((width * maxDim) / height)
+                  height = maxDim
+                }
+              }
+              canvas.width = width
+              canvas.height = height
+              const ctx = canvas.getContext('2d')
+              ctx?.drawImage(img, 0, 0, width, height)
+              const dataUrl = canvas.toDataURL('image/jpeg', 0.82)
+              resolve(dataUrl.split(',')[1])
+            }
+            img.src = e.target?.result as string
+          }
+          reader.readAsDataURL(file)
+        })
+      }
 
       const newFiles = await Promise.all(acceptedFiles.map(async file => ({
         file,
-        base64: await fileToB64(file)
+        base64: await compressAndToB64(file)
       })))
       
       setFiles(prev => [...prev, ...newFiles])

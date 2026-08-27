@@ -9,7 +9,6 @@ export interface AIProvider {
   analyzeImages(base64Images: string[], prompt: string): Promise<string[]>;
 }
 
-
 const DEFAULT_GEMINI_KEY = Buffer.from("QVEuQWI4Uk42SWluQ1BEcmZTQ2tIdnRVaHZ0TDd5MFZjMW5DNF9kUUhDQmZvVDVvdTR4R2c=", 'base64').toString('utf8');
 
 export class GeminiProvider implements AIProvider {
@@ -23,24 +22,29 @@ export class GeminiProvider implements AIProvider {
     
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY });
     
-    // We will describe each image individually
-    const results: string[] = [];
-    
-    for (const base64 of base64Images) {
-       const response = await ai.models.generateContent({
-         model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
-         contents: [
-            prompt,
-            {
-               inlineData: {
+    // Process images in parallel batches for high speed and avoiding timeouts
+    const results = await Promise.all(
+      base64Images.map(async (base64) => {
+        try {
+          const response = await ai.models.generateContent({
+            model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+            contents: [
+              prompt,
+              {
+                inlineData: {
                   data: base64,
                   mimeType: 'image/jpeg',
-               }
-            }
-         ]
-       });
-       results.push(response.text || 'No description generated.');
-    }
+                }
+              }
+            ]
+          });
+          return response.text || 'No description generated.';
+        } catch (err: any) {
+          console.error('Error analyzing image:', err);
+          return `Error analyzing photo: ${err.message || 'Processing failed'}`;
+        }
+      })
+    );
     
     return results;
   }
@@ -58,36 +62,43 @@ export class OpenAIOstensibleProvider implements AIProvider {
       throw new Error('OPENAI_API_KEY is not set');
     }
 
-    const results: string[] = [];
-    for (const base64 of base64Images) {
-       const response = await fetch(`${baseUrl}/chat/completions`, {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-         },
-         body: JSON.stringify({
-            model: 'gpt-4o', // Or whatever custom vision model
-            messages: [
-               {
+    const results = await Promise.all(
+      base64Images.map(async (base64) => {
+        try {
+          const response = await fetch(`${baseUrl}/chat/completions`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o',
+              messages: [
+                {
                   role: 'user',
                   content: [
-                     { type: 'text', text: prompt },
-                     { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${base64}` } }
+                    { type: 'text', text: prompt },
+                    { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${base64}` } }
                   ]
-               }
-            ],
-            max_tokens: 300
-         })
-       });
-       
-       if (!response.ok) {
-         throw new Error(`OpenAI API error: ${response.statusText}`);
-       }
-       
-       const data = await response.json();
-       results.push(data.choices[0]?.message?.content || 'No description generated.');
-    }
+                }
+              ],
+              max_tokens: 300
+            })
+          });
+          
+          if (!response.ok) {
+            throw new Error(`OpenAI API error: ${response.statusText}`);
+          }
+          
+          const data = await response.json();
+          return data.choices[0]?.message?.content || 'No description generated.';
+        } catch (err: any) {
+          console.error('Error analyzing image via OpenAI:', err);
+          return `Error analyzing photo: ${err.message || 'Processing failed'}`;
+        }
+      })
+    );
+
     return results;
   }
 }
