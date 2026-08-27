@@ -645,27 +645,29 @@ export function MainClient() {
               {/* 3. BALANCED GRID VIEW */}
               {/* ========================================================================= */}
               {viewMode === 'grid' && (
-                <div className="h-full overflow-y-auto pr-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {results.map((res, i) => (
-                    <div 
-                      key={i} 
-                      className="flex flex-col bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden shadow-2xs"
-                    >
-                      <div className="aspect-video w-full bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800/60 overflow-hidden relative">
-                        <img 
-                          src={getImageSrc(res)} 
-                          className="w-full h-full object-cover" 
-                          alt={`Inspection grid item ${i + 1}`} 
-                        />
-                        <div className="absolute top-1.5 left-1.5 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-semibold text-zinc-200 border border-zinc-700/50">
-                          #{i + 1}
+                <div className="h-full overflow-y-auto pr-1">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4">
+                    {results.map((res, i) => (
+                      <div 
+                        key={i} 
+                        className="flex flex-col bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden shadow-2xs"
+                      >
+                        <div className="w-full h-48 sm:h-56 bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800/60 overflow-hidden relative shrink-0">
+                          <img 
+                            src={getImageSrc(res)} 
+                            className="w-full h-full object-cover" 
+                            alt={`Inspection grid item ${i + 1}`} 
+                          />
+                          <div className="absolute top-1.5 left-1.5 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-semibold text-zinc-200 border border-zinc-700/50">
+                            #{i + 1}
+                          </div>
+                        </div>
+                        <div className="p-3.5 flex-1 flex flex-col justify-start">
+                          <FormattedReport description={res.description} />
                         </div>
                       </div>
-                      <div className="p-3.5 flex-1">
-                        <FormattedReport description={res.description} />
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
 

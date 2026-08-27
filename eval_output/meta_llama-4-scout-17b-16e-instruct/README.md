@@ -1,152 +1,161 @@
-# Evaluation Report: @cf/meta/llama-4-scout-17b-16e-instruct
-Generated: 2026-08-27T08:55:59.337Z
+# Clean Inspection Report: @cf/meta/llama-4-scout-17b-16e-instruct
+Generated: 2026-08-27T09:54:54.379Z
 
 
-## Photo: Screenshot 2026-08-27 040613.png
+## Screenshot 2026-08-27 040613.png
 
-Condition Overview [Brief]
-- The bathroom appears to be in good condition with no visible excessive dirt or major damages.
-
-Excessive Dirt Details
-- No noticeable dirt, stains, or grime are visible in the bathroom.
-
-Damages Details
-- No damages or missing items are apparent in the photo; the toilet, sink, and bathtub/shower appear intact.
-
----
-
-## Photo: Screenshot 2026-08-27 040619.png
-
-Condition Overview [Brief]
-- The wall was left with minor damages and marks
+Condition Overview
+The bathroom appears to be in a relatively clean and undamaged condition.
 
 Excessive Dirt Details
-- No excessive dirt or stains are visible on the wall
+- None observed
 
 Damages Details
-- Two areas of wall damage, likely from removed wall hangings or fixtures, with peeling paint and exposed drywall
-- Possible nail holes or small marks on the wall above and below the main damage areas
+- None observed
 
 ---
 
-## Photo: Screenshot 2026-08-27 040628.png
+## Screenshot 2026-08-27 040619.png
 
-Condition Overview [Brief]
-- The closet was left in fair condition with some scuff marks on the walls
+Condition Overview
+The photo shows a wall with visible patches where items have been removed.
 
 Excessive Dirt Details
-- No excessive dirt or stains are visible on the floor or walls, but there is a dark oval-shaped stain on the floor
+- None observed
 
 Damages Details
-- Scuff marks or scratches are visible on the wall, possibly from nails or hooks 
-- A hole or mark is visible on the left wall, near the bottom
+- Two rectangular patches on the wall where paint and texture are missing, likely from removed wall hangings or fixtures. 
+- One small, square electrical outlet on the wall appears to be intact.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040645.png
+## Screenshot 2026-08-27 040628.png
 
-Condition Overview [Brief]
-- The room was left in good condition with minor wall damage
+Condition Overview
+The closet appears to be empty with some visible marks on the walls and floor.
 
 Excessive Dirt Details
-- No excessive dirt or stains visible
+- There is a dark oval-shaped stain or mark on the floor.
+- The walls have some scuff marks or scratches, particularly a noticeable set of marks that appear to be in a lighter shade than the surrounding wall, possibly indicating some form of damage or marking.
 
 Damages Details
-- Multiple small nail holes in the wall
-- One light switch cover missing 
-- One outlet cover missing
+- A hole or tear is visible on the left wall.
+- The walls have scratches or scuff marks, as mentioned, which could be considered damage. 
+- No other specific physical damages, cracks, chips, or missing items are visible in the provided photo.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040650.png
+## Screenshot 2026-08-27 040645.png
 
-Condition Overview [Brief]
-- The wall appears to be in fair condition with minor marks and holes
+Condition Overview
+The room appears to be empty with a plain wall, light-colored paint, and a clean floor. The wall has multiple small holes and some marks.
 
 Excessive Dirt Details
-- No excessive dirt or stains are visible on the wall
+- None observed
 
 Damages Details
-- Multiple small nail holes or marks are present on the wall, indicating some level of wear and tear.
+- Small holes in the wall (approximately 15-20 visible)
+- Possible marks or discoloration on the wall (possibly nail or screw marks)
+- One light switch plate appears slightly dirty or discolored compared to the others, but it's still in place. 
+- The other two items on the wall appear to be electrical outlet covers, one is white and one is off-white/yellowish, and they are in place.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040712.png
+## Screenshot 2026-08-27 040650.png
 
-Condition Overview [Brief]
-- The entryway was left in fair condition with some noticeable damage
+Condition Overview
+The wall appears to be in a relatively clean and intact condition, with some minor marks.
 
 Excessive Dirt Details
-- No excessive dirt or stains observed
+- Small dark spots or marks are visible on the wall, possibly nail holes or minor stains.
 
 Damages Details
-- Door shows scratches or scuff marks, likely from a removal tool or excessive force
-- Possible hole or mark on the wall near the baseboard 
-- Possible hole or mark on the wall near the light switch plate
+- Small holes or marks are observed on the wall, likely from nails or push pins, approximately 6-7 in total. No large cracks, chips, or significant damages are visible.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040718.png
+## Screenshot 2026-08-27 040712.png
 
-Condition Overview: 
-The kitchen was left in poor condition with significant grease and food residue build-up and minor damages.
-
-Excessive Dirt Details:
-- The stovetop is heavily soiled with burnt-on food and grease stains covering the surface of the stove and splattered on the countertop.
-- Grease and food residue are also visible on the countertop around the stove.
-
-Damages Details:
-- No visible damages noted, but the overall condition suggests neglect in cleaning and maintenance.
-
----
-
-## Photo: Screenshot 2026-08-27 040729.png
-
-Condition Overview [Brief]
-- The hallway was left in fair condition with noticeable wall damage
+Condition Overview
+The photo shows a room's entryway with a brown wooden door, cream-colored walls, and tiled flooring. The door and surrounding area appear to have some damage and marks.
 
 Excessive Dirt Details
-- No excessive dirt or stains observed
+- Scratches or scuff marks are visible on the lower part of the door.
 
 Damages Details
-- Multiple areas of peeling or stripped paint on the wall, possibly from removal of wall hangings or decals
-- Possible nail holes or screw marks on the wall
+- The door has scratches or scuff marks on its lower part.
+- There are holes or marks on the wall near the baseboard, possibly from nails or screws.
+- The baseboard appears to be missing or damaged in some areas.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040843.png
+## Screenshot 2026-08-27 040718.png
 
-Condition Overview [Brief]
-- The room appears to be in good condition with no visible excessive dirt or major damages.
+Condition Overview
+The stove and surrounding countertop appear to be in a dirty and stained condition.
 
 Excessive Dirt Details
-- No noticeable dirt or stains are visible on the floor, walls, or ceiling.
+- The stove top has significant burnt-on food and grime accumulation around and on the burners.
+- The countertop adjacent to the stove has splatters and spills of food debris.
+- There are visible dark brown to black stains and grime on the stove surface and countertop.
 
 Damages Details
-- Small holes in the wall near the right side, likely from removed wall anchors or nails.
-- No other damages or issues are apparent in the image.
+- None observed.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040848.png
+## Screenshot 2026-08-27 040729.png
 
-Condition Overview: The kitchen appears to be in a clean and undamaged condition.
-
-Excessive Dirt Details: There is no noticeable dirt or stains visible in the image.
-
-Damages Details: There are no damages or issues apparent in the image. The appliances, countertops, and cabinets appear to be intact and in good condition.
-
----
-
-## Photo: Screenshot 2026-08-27 040900.png
-
-Condition Overview [Brief]
-- The room appears to be in good condition with no visible excessive dirt or damage.
+Condition Overview
+The room appears to have some damage to the walls, but is otherwise empty and clean.
 
 Excessive Dirt Details
-- None noted, the room appears clean.
+- None observed
 
 Damages Details
-- None noted, the walls, floor, and fixtures appear undamaged.
+- There are multiple areas of peeling or torn paint on the right wall, approximately in a circular pattern. 
+- A small, square, white object (possibly a thermostat) is mounted on the wall, to the left of the damaged area. 
+- An electrical outlet is visible below the damaged area. 
+- No other damages are visible in this photo.
+
+---
+
+## Screenshot 2026-08-27 040843.png
+
+Condition Overview
+The room appears to be in a clean and relatively undamaged condition, with no visible signs of heavy use or neglect.
+
+Excessive Dirt Details
+- None observed
+
+Damages Details
+- Small holes in the right wall, near the outlets
+- No other damages observed.
+
+---
+
+## Screenshot 2026-08-27 040848.png
+
+Condition Overview
+The kitchen appears to be empty and mostly clean, with no visible clutter or debris.
+
+Excessive Dirt Details
+- None observed
+
+Damages Details
+- None observed
+
+---
+
+## Screenshot 2026-08-27 040900.png
+
+Condition Overview
+The room appears to be empty and relatively clean, with no visible furniture or personal belongings. The walls, floor, and ceiling seem to be in a neutral and undamaged condition.
+
+Excessive Dirt Details
+- None observed
+
+Damages Details
+- None observed
 
 ---

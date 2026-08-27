@@ -1,192 +1,165 @@
-# Evaluation Report: @cf/meta/llama-3.2-11b-vision-instruct
-Generated: 2026-08-27T08:56:18.654Z
+# Clean Inspection Report: @cf/meta/llama-3.2-11b-vision-instruct
+Generated: 2026-08-27T09:54:22.627Z
 
 
-## Photo: Screenshot 2026-08-27 040613.png
+## Screenshot 2026-08-27 040613.png
 
-The bathroom was left in poor condition, with noticeable dirt and damage.
+**Condition Overview**
+The bathroom is in good overall condition, with clean fixtures and a well-maintained appearance.
+
+**Excessive Dirt Details**
+- None observed
+
+**Damages Details**
+- None observed
+
+---
+
+## Screenshot 2026-08-27 040619.png
+
+**Condition Overview**
+The wall appears to be in a fair condition, with a few minor imperfections.
+
+**Excessive Dirt Details**
+- None observed
+
+**Damages Details**
+- A small hole approximately 1.5 inches wide in the middle of the wall
+- A small patch of missing paint on the upper left side of the wall, approximately 2 inches by 4 inches in size
+- A small stain on the lower right side of the wall, approximately 1 inch by 1 inch in size
+
+---
+
+## Screenshot 2026-08-27 040628.png
+
+**Condition Overview**
+The closet appears to be in a good condition, with a clean and organized space. The walls and floor are free of any significant stains or damage.
+
+**Excessive Dirt Details**
+- None observed
+
+**Damages Details**
+- None observed
+
+---
+
+## Screenshot 2026-08-27 040645.png
+
+Condition Overview
+The wall is clean and free of any notable marks or stains.
+
+Excessive Dirt Details
+- None observed
+
+Damages Details
+- Small holes from the previous light switch, one of which is a bit larger than the other
+- Light switch plate is missing from the left side of the wall
+- Light switch plate is missing from the right side of the wall
+- The paint around the holes appears to be slightly scratched.
+
+---
+
+## Screenshot 2026-08-27 040650.png
+
+**Condition Overview**
+
+The photo shows a wall with three small, dark spots that appear to be dirt or scuff marks.
 
 **Excessive Dirt Details**
 
-* The bathtub is covered in dirt and soap scum, with visible stains on the walls and floor.
-* The shower curtain is dirty and has a few stains.
-
-**Damage Details**
-
-* The bathtub faucet is missing.
-* The shower head is loose and appears to be damaged.
-* The bathroom mirror has a few cracks on the edges.
-* The bathroom sink has a few scratches on the surface.
-
-Overall, the bathroom requires thorough cleaning and repair to restore it to a move-in condition.
-
----
-
-## Photo: Screenshot 2026-08-27 040619.png
-
-The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
-
-Excessive Dirt Details:
-
-* Grease stains on the stovetop
-* Grease splatters on the backwall and counter
-
-Damages Details:
-
-* One missing Stovetop burner coil
-* One missing temperature dial
-* One damaged temperature dial
-
----
-
-## Photo: Screenshot 2026-08-27 040628.png
-
-**Condition Overview:** The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
-
-**Excessive Dirt Details:**
-
-* The stovetop is covered in grease stains.
-* Grease splatters are visible on the backwall.
-* The counter shows signs of grease accumulation.
-
-**Damages Details:**
-
-* One missing stovetop burner coil.
-* One missing temperature dial.
-* One damaged temperature dial.
-
----
-
-## Photo: Screenshot 2026-08-27 040645.png
-
-The image depicts a kitchen with noticeable grease build-up and minor damages. The stovetop is covered in grease stains, with splatters visible on the backwall and counter. One stovetop burner coil is missing, one temperature dial is missing, and one temperature dial is damaged.
-
-**Condition Overview:** The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
-
-**Excessive Dirt Details:**
-
-*   Stovetop is covered in grease stains with grease splatters visible on the backwall and counter.
-
-**Damages Details:**
-
-*   One missing Stovetop burner coil
-*   One Missing temperature dial
-*   One Damaged temperature dial
-
----
-
-## Photo: Screenshot 2026-08-27 040650.png
-
-The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages. The stovetop is covered in grease stains with grease splatters visible on the backwall and counter. There is one missing stovetop burner coil, one missing temperature dial, and one damaged temperature dial.
-
-**Excessive Dirt Details**
-
-*   Grease stains on the stovetop
-*   Grease splatters on the backwall and counter
+- None observed
 
 **Damages Details**
 
-*   One missing stovetop burner coil
-*   One missing temperature dial
-*   One damaged temperature dial
+- None observed
 
 ---
 
-## Photo: Screenshot 2026-08-27 040712.png
+## Screenshot 2026-08-27 040712.png
 
-The image depicts a doorway with a brown door and a white frame. The door has a silver handle and a silver lock. The floor is made of beige tiles, and the wall is painted white. There is a small section of the wall that is painted a darker shade of beige, which appears to be a different color than the rest of the wall.
+Condition Overview
+The door appears to be in good condition, with no visible signs of excessive wear or damage.
 
-The overall condition of the doorway is good, with no visible signs of damage or excessive dirt. The door and frame appear to be in good condition, and the floor and walls are clean and free of any notable stains or marks.
+Excessive Dirt Details
+- None observed
 
-**Condition Overview:**
-The doorway was left in good condition with no visible signs of damage or excessive dirt.
-
-**Excessive Dirt Details:**
-There are no excessive dirt details visible in this image.
-
-**Damages Details:**
-There are no damages details visible in this image.
+Damages Details
+- A scratch is visible on the door, which is located in the bottom left area of the door.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040718.png
+## Screenshot 2026-08-27 040718.png
 
-**Condition Overview:** The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
+**Condition Overview**
+The oven is dirty and covered in grease and food residue.
 
-**Excessive Dirt Details:**
+**Excessive Dirt Details**
+- Excessive grease and food residue on the oven door and top.
 
-*   The stovetop is covered in grease stains.
-*   Grease splatters are visible on the backwall and counter.
-
-**Damages Details:**
-
-*   One missing stovetop burner coil.
-*   One missing temperature dial.
-*   One damaged temperature dial.
+**Damages Details**
+- None observed.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040729.png
+## Screenshot 2026-08-27 040729.png
 
-**Condition Overview:** The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
+**Condition Overview**
+The photo shows a hallway with a door on the left and a wall with visible damage on the right.
 
-**Excessive Dirt Details:**
+**Excessive Dirt Details**
+- None observed
 
-*   The stovetop is covered in grease stains.
-*   Grease splatters are visible on the back wall and counter.
-
-**Damages Details:**
-
-*   One missing stovetop burner coil.
-*   One missing temperature dial.
-*   One damaged temperature dial.
-
-**Assessment:** The kitchen has been used extensively, with a noticeable build-up of grease on the stovetop and surrounding areas. The missing and damaged components of the stovetop suggest that it may require replacement or repair.
+**Damages Details**
+- A large hole in the wall, approximately 5 inches wide and 4 inches tall, with exposed drywall and insulation.
+- A small hole in the wall, approximately 1 inch wide and 1 inch tall, with exposed drywall.
+- A light switch plate cover is missing from the wall.
 
 ---
 
-## Photo: Screenshot 2026-08-27 040843.png
+## Screenshot 2026-08-27 040843.png
 
-**Condition Overview:** The room appears to be in good condition, with no visible dirt or damage.
+**Condition Overview**
 
-**Assessment:** The room is clean and well-maintained, with no signs of excessive dirt or damage. The walls, floor, and ceiling are all free from stains or marks, and the furniture appears to be in good condition. Overall, the room looks well-cared for and ready for occupancy.
+The room appears to be in a clean and well-maintained state, with minimal signs of wear and tear. The walls, ceiling, and floor are all in good condition, and the room is well-lit, suggesting that it has been recently cleaned and maintained.
 
----
+**Excessive Dirt Details**
 
-## Photo: Screenshot 2026-08-27 040848.png
+- None observed
 
-**Move-Out Photo Assessment: Kitchen**
+**Damages Details**
 
-**Condition Overview:** The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
-
-**Excessive Dirt Details:**
-
-* Grease stains cover the stovetop.
-* Grease splatters are visible on the backwall and counter.
-
-**Damages Details:**
-
-* One missing stovetop burner coil.
-* One missing temperature dial.
-* One damaged temperature dial.
-
-This assessment highlights the need for thorough cleaning and potential repairs to restore the kitchen to a satisfactory state.
+- None observed
 
 ---
 
-## Photo: Screenshot 2026-08-27 040900.png
+## Screenshot 2026-08-27 040848.png
 
-**Condition Overview:**
-The kitchen was left in poor-fair condition with noticeable grease build-up and minor damages.
+**Condition Overview**
 
-**Excessive Dirt Details:**
-- The stovetop is covered in grease stains with grease splatters visible on the backwall and counter.
+The kitchen appears to be in good condition, with minimal signs of wear and tear. The countertops, cabinets, and appliances are clean and well-maintained.
 
-**Damages Details:**
-- One missing Stovetop burner coil
-- One Missing temperature dial
-- One Damaged temperature dial
+**Excessive Dirt Details**
 
-Based on the provided information, the kitchen's condition is characterized by excessive dirt, specifically grease build-up on the stovetop and backwall, as well as minor damages such as a missing burner coil, a missing temperature dial, and a damaged temperature dial.
+* None observed
+
+**Damages Details**
+
+* None observed
+
+---
+
+## Screenshot 2026-08-27 040900.png
+
+**Condition Overview**
+
+The room appears clean and well-maintained, with no visible signs of excessive dirt or damage.
+
+**Excessive Dirt Details**
+
+- None observed
+
+**Damages Details**
+
+- None observed
 
 ---

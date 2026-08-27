@@ -1,1 +1,10 @@
-{"choices":[{"finish_reason":"stop","index":0,"logprobs":null,"prompt_logprobs":null,"prompt_token_ids":null,"routed_experts":null,"stop_reason":248044,"text":"<think>\n\n</think>\n\nCondition Overview [Brief]\n- The bedroom was left in fair condition with a generally clean space but visible wear on walls and flooring.\n\nExcessive Dirt Details\n- None significant. Walls appear free of major stains or grime.\n\nDamages Details\n- Small nail holes or marks visible on the wall to the left of the bed.\n- Minor scuff marks on the baseboard near the door.\n- Faint indentations or wear marks on the laminate flooring near the closet.","token_ids":null}],"created":1787820411,"ec_transfer_params":null,"id":"cmpl-8a3ee068-c76b-4271-ae4f-53cde5c32672","kv_transfer_params":null,"metrics":null,"model":"@cf/qwen/qwen3.8-27b","object":"text_completion","service_tier":null,"usage":{"prompt_tokens":124,"completion_tokens":105,"total_tokens":229,"prompt_tokens_details":{"cached_tokens":0},"neurons":35.61817932128906}}
+Condition Overview
+A plain interior wall finished in light beige/cream paint, with a white baseboard along the bottom and a single electrical outlet near the lower center. A small section of a kitchen counter, dark cabinet, and white tiled backsplash is visible at the far right edge. The wall surface is otherwise flat and unadorned but shows two distinct rectangular marks in the central area.
+
+Excessive Dirt Details
+- A small, faint rectangular discolored/stained mark in the upper-center of the wall.
+- A larger rectangular discolored patch in the center of the wall, with a lighter (whitish) center and a darker tan/brown border, consistent with staining or a residue mark.
+
+Damages Details
+- Two rectangular wall-surface imperfections in the center of the wall (matching the discolored areas above), appearing as patched or uneven paint sections where the finish is compromised.
+- No cracks, chips, holes, or missing items otherwise observed on the visible wall, baseboard, or outlet.

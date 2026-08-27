@@ -1,1 +1,8 @@
-{"choices":[{"finish_reason":"stop","index":0,"logprobs":null,"text":" [IMAGE TEXT: \"A regular yellow SpongeBob SquarePants themed kids suitcase sits on a gently used but clean gray carpet.\"]Condition Overview [Brief]\n- Property area was left in good condition; the carpet shows only gentle wear and appears clean, with a personal item (child's suitcase) present that the tenant should remove\n\nExcessive Dirt Details\n- None observed; the gray carpet appears clean with no visible staining, debris, or excessive soiling\n\nDamages Details\n- None observed; carpet shows only normal, gentle wear consistent with expected use; no rips, tears, burns, or permanent damage noted\n\nTenant Responsibility Note\n- Personal property (SpongeBob SquarePants themed kids suitcase) remains on-site and requires removal by tenant to avoid potential abandonment handling fees"}],"created":1787820700,"id":"eb23a29e883f428ca11531092e894dc6","model":"@cf/moonshotai/kimi-k2.6","object":"text_completion","usage":{"prompt_tokens":121,"completion_tokens":160,"total_tokens":281,"prompt_tokens_details":{"cached_tokens":0},"neurons":68.63182067871094}}
+Condition Overview
+Wall showing two visible rectangular patched areas with paint/texture variation; otherwise appears clean with standard baseboard and electrical outlet present.
+
+Excessive Dirt Details
+- None observed
+
+Damages Details
+- Two rectangular wall patches are visible with uneven texture and paint mismatch; one smaller patch upper-center and one larger patch center-right of wall surface

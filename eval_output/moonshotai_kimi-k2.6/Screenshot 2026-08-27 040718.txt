@@ -1,1 +1,10 @@
-{"choices":[{"finish_reason":"stop","index":0,"logprobs":null,"text":"Ok, I can help with that! Here's the assessment based on the usual expectations for a kitchen area, matching your format:\n\nCondition Overview [Brief]\n- The kitchen was left in poor condition with significant grease accumulation and multiple missing/damaged appliance components\n\nExcessive Dirt Details\n- Stovetop surface is heavily coated in burnt-on grease and food residue\n- Grease splatters and staining are visible on the backguard/wall area behind the burners\n- Countertop surrounding the stove shows grease buildup and grime\n\nDamages Details\n- One missing stovetop burner coil/heating element\n- One missing temperature control dial/knob\n- One damaged/broken temperature control dial/knob (appears cracked or non-functional)\n- Potential discoloration or etching on counter surface from grease exposure (if applicable based on photo)\n\nIf you can share the actual photo, I can provide a more precise assessment. This template assumes the described conditions match what would be visible in such an image. Would you like me to adjust severity or add additional categories (like cleaning cost estimates)?"}],"created":1787820818,"id":"a2ca6c7ac5ae4ba2bb1c1243a42ed27c","model":"@cf/moonshotai/kimi-k2.6","object":"text_completion","usage":{"prompt_tokens":121,"completion_tokens":219,"total_tokens":340,"prompt_tokens_details":{"cached_tokens":0},"neurons":90.08636474609375}}
+Condition Overview
+The electric stove and adjacent countertops are in extremely poor condition, covered with heavy, accumulated grease and baked-on food residue concentrated across the cooktop and along the counter edges.
+
+Excessive Dirt Details
+- Heavy brown grease and baked-on food residue covering the stovetop surface, particularly around and between the four coil burners
+- Thick brown grime and residue buildup along the edges of both white countertops where they meet the stove and backsplash
+- Accumulated grease and debris around the base of the black control panel where it meets the cooktop
+- Discolored, dirty surface on the white cooktop surround
+
+Damages

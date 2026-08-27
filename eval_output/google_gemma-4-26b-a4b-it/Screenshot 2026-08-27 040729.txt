@@ -1,8 +1,8 @@
-Condition Overview [Brief]
-- The room is in fair condition, though the walls show significant cosmetic damage.
+Condition Overview
+The wall surface shows visible damage to the paint or wall finish, while the flooring and hallway appear to be in fair condition.
 
 Excessive Dirt Details
-- None visible.
+- None observed
 
 Damages Details
-- Multiple large patches of missing paint or damaged drywall on the main wall.
+- Multiple patches of peeling or chipped paint/wall surface on the main wall.

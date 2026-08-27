@@ -1,8 +1,8 @@
-Condition Overview [Brief]
-- The bathroom is in good condition and appears to have been cleaned thoroughly.
+Condition Overview
+The bathroom appears to be in clean and well-maintained condition.
 
 Excessive Dirt Details
-- None visible
+- None observed
 
 Damages Details
-- None visible
+- None observed

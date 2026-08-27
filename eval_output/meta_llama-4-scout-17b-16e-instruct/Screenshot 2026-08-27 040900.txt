@@ -1,8 +1,8 @@
-Condition Overview [Brief]
-- The room appears to be in good condition with no visible excessive dirt or damage.
+Condition Overview
+The room appears to be empty and relatively clean, with no visible furniture or personal belongings. The walls, floor, and ceiling seem to be in a neutral and undamaged condition.
 
 Excessive Dirt Details
-- None noted, the room appears clean.
+- None observed
 
 Damages Details
-- None noted, the walls, floor, and fixtures appear undamaged.
+- None observed
