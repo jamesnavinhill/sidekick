@@ -7,6 +7,7 @@ import { GoogleGenAI } from '@google/genai';
 export const runtime = 'nodejs';
 
 export async function GET() {
+  const version = "build-2026-08-27-v2";
   const envCheck = {
     DATABASE_URL: !!process.env.DATABASE_URL,
     NEON_POOLING: !!process.env.NEON_POOLING,
@@ -51,6 +52,7 @@ export async function GET() {
   }
 
   return NextResponse.json({
+    version,
     status: 'ok',
     environment: envCheck,
     db: { status: dbStatus, tables: dbTables },
