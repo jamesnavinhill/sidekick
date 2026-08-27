@@ -4,6 +4,13 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { db } from "./lib/db"
 import * as schema from "./lib/db/schema"
 
+if (!process.env.AUTH_SECRET) {
+  process.env.AUTH_SECRET = process.env.NEXTAUTH_SECRET || "sidekick-super-secret-auth-key-2026-secure";
+}
+if (!process.env.AUTH_TRUST_HOST) {
+  process.env.AUTH_TRUST_HOST = "true";
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db, {
     usersTable: schema.users,
