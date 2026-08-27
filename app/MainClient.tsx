@@ -8,7 +8,7 @@ import {
   Settings2, 
   LayoutGrid, 
   List, 
-  SlidersHorizontal,
+  Presentation,
   ChevronLeft,
   ChevronRight,
   X, 
@@ -51,6 +51,26 @@ function getImageSrc(item?: { imageUrl?: string; base64?: string; base64Data?: s
   return ''
 }
 
+function cleanInspectionText(raw: string): string {
+  if (!raw) return 'No report generated.'
+  let text = raw.trim()
+  
+  if (text.startsWith('{') || text.startsWith('[')) {
+    try {
+      const parsed = JSON.parse(text)
+      if (parsed.choices?.[0]?.text) text = parsed.choices[0].text
+      else if (parsed.choices?.[0]?.message?.content) text = parsed.choices[0].message.content
+      else if (parsed.result?.response) text = parsed.result.response
+      else if (parsed.result?.description) text = parsed.result.description
+    } catch (e) {}
+  }
+  
+  // Clean thinking blocks and trailing JSON residue
+  text = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim()
+  text = text.replace(/^"|"$/g, '').replace(/\\n/g, '\n').replace(/\\"/g, '"').trim()
+  return text
+}
+
 export function MainClient() {
   // Theme state
   const [theme, setTheme] = React.useState<"dark" | "light">("dark")
@@ -80,20 +100,25 @@ export function MainClient() {
 
   // Initialize theme
   React.useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null
-    if (savedTheme) {
-      setTheme(savedTheme)
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark')
-    } else {
+    const savedTheme = localStorage.getItem('sidekick-theme') as 'dark' | 'light' | null
+    const initialTheme = savedTheme || 'dark'
+    setTheme(initialTheme)
+    if (initialTheme === 'dark') {
       document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
     }
   }, [])
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark'
     setTheme(next)
-    localStorage.setItem('theme', next)
-    document.documentElement.classList.toggle('dark', next === 'dark')
+    localStorage.setItem('sidekick-theme', next)
+    if (next === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   }
 
   React.useEffect(() => {
@@ -216,15 +241,28 @@ export function MainClient() {
     }
   }
 
+  const nextSlide = () => {
+    if (results.length > 0) {
+      setSlideIndex(prev => (prev < results.length - 1 ? prev + 1 : 0))
+    }
+  }
+
+  const prevSlide = () => {
+    if (results.length > 0) {
+      setSlideIndex(prev => (prev > 0 ? prev - 1 : results.length - 1))
+    }
+  }
+
   return (
     <div className="h-screen w-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans flex flex-col">
       
       {/* ========================================================================= */}
-      {/* 1. HEADER (ICONS ONLY EXCEPT THE PROPERTY SELECTOR) */}
+      {/* 1. HEADER (ICONS ONLY EXCEPT THE PROPERTY SELECTOR & SLIDESHOW CENTER NAV) */}
       {/* Left: [Toggle Input] | [Property Selector] */}
+      {/* Center: < 1 / 11 > (Slideshow Mode Only) */}
       {/* Right: [Slideshow/Card/Grid] | [Theme Toggle (Sun/Moon)] | [Settings] */}
       {/* ========================================================================= */}
-      <header className="shrink-0 h-13 bg-white/95 dark:bg-zinc-950/95 border-b border-zinc-200 dark:border-zinc-800/80 px-3 flex items-center justify-between z-30">
+      <header className="shrink-0 h-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800/80 px-3 flex items-center justify-between z-30">
         
         {/* Left Group */}
         <div className="flex items-center gap-2">
@@ -234,14 +272,14 @@ export function MainClient() {
             variant="ghost" 
             size="icon" 
             onClick={() => setSidebarOpen(prev => !prev)}
-            className="w-8 h-8 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+            className="w-8 h-8 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
           >
             {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeftOpen className="w-4 h-4" />}
           </Button>
 
           {/* Property Selector */}
-          <div className="flex items-center gap-1.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2.5 py-1 shadow-2xs">
+          <div className="flex items-center gap-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2.5 py-1 shadow-2xs">
             <Building2 className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 shrink-0" />
             <select
               id="property-select"
@@ -267,11 +305,36 @@ export function MainClient() {
 
         </div>
 
+        {/* Center Group: Slideshow Navigator < 1 / 11 > (Only when Slideshow mode active) */}
+        {viewMode === 'slideshow' && results.length > 0 && (
+          <div className="flex items-center gap-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2 py-0.5 rounded-md shadow-2xs">
+            <button 
+              onClick={prevSlide}
+              className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+              title="Previous Photo"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+            
+            <span className="text-xs font-semibold tracking-wide text-zinc-700 dark:text-zinc-300 min-w-[42px] text-center font-mono">
+              {slideIndex + 1} / {results.length}
+            </span>
+
+            <button 
+              onClick={nextSlide}
+              className="p-1 rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+              title="Next Photo"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
+
         {/* Right Group */}
         <div className="flex items-center gap-2">
           
-          {/* View Mode Switcher Icons: Slideshow | Cards | Grid */}
-          <div className="flex items-center bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-0.5 rounded-md">
+          {/* View Mode Switcher Icons: Presentation (Slideshow) | Cards | Grid */}
+          <div className="flex items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-0.5 rounded-md">
             <button 
               onClick={() => setViewMode('slideshow')}
               className={`p-1.5 rounded transition-colors ${
@@ -281,7 +344,7 @@ export function MainClient() {
               }`}
               title="Slideshow View"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <Presentation className="w-3.5 h-3.5" />
             </button>
             
             <button 
@@ -314,7 +377,7 @@ export function MainClient() {
             variant="ghost" 
             size="icon" 
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+            className="w-8 h-8 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             title={theme === 'dark' ? "Switch to light theme" : "Switch to dark theme"}
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -326,29 +389,30 @@ export function MainClient() {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="w-8 h-8 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                className="w-8 h-8 rounded-md text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 title="Settings & Model Configuration"
               >
                 <Settings2 className="w-4 h-4" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-50 sm:max-w-[660px] max-h-[88vh] flex flex-col p-5 overflow-hidden shadow-xl rounded-xl">
-              <DialogHeader className="pb-2 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+            <DialogContent className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-50 sm:max-w-[780px] h-[80vh] flex flex-col p-6 overflow-hidden shadow-2xl rounded-2xl">
+              <DialogHeader className="pb-3 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
                 <DialogTitle className="text-base font-semibold">Model & Prompt Configuration</DialogTitle>
               </DialogHeader>
               
-              <div className="overflow-y-auto pr-1 py-3 space-y-4 flex-1">
-                <div className="space-y-1.5">
+              <div className="flex-1 flex flex-col min-h-0 py-4 gap-4 overflow-hidden">
+                <div className="flex-1 flex flex-col min-h-0 space-y-2">
                   <Label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">AI Inspection Instructions</Label>
                   <Textarea 
                     value={systemPrompt}
                     onChange={e => setSystemPrompt(e.target.value)}
-                    className="bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 min-h-[160px] text-xs text-zinc-800 dark:text-zinc-200 font-mono resize-none focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-700 leading-relaxed" 
+                    className="flex-1 w-full bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-xs text-zinc-800 dark:text-zinc-200 font-mono p-3 resize-none focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-700 leading-relaxed rounded-lg" 
                     placeholder="Enter specific move-out guidelines..."
                   />
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Controls the structural format, brevity, and chargeback focus of descriptions.</p>
                 </div>
-                <div className="space-y-1.5">
+                
+                <div className="space-y-1.5 shrink-0">
                   <Label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Default Model Provider</Label>
                   <select 
                     className="flex h-9 w-full rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-1.5 text-xs text-zinc-800 dark:text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-700"
@@ -383,8 +447,8 @@ export function MainClient() {
                 </div>
               </div>
 
-              <DialogFooter className="pt-2 border-t border-zinc-200 dark:border-zinc-800 shrink-0">
-                <Button onClick={saveSettings} size="sm" className="bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 text-xs">
+              <DialogFooter className="pt-3 border-t border-zinc-200 dark:border-zinc-800 shrink-0 flex justify-end">
+                <Button onClick={saveSettings} size="sm" className="bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 text-xs px-4">
                   Save Configuration
                 </Button>
               </DialogFooter>
@@ -396,7 +460,7 @@ export function MainClient() {
       </header>
 
       {/* ========================================================================= */}
-      {/* 2. MAIN WORKSPACE (NO DUAL SCROLLBARS, COMPACT PADDING) */}
+      {/* 2. MAIN WORKSPACE */}
       {/* ========================================================================= */}
       <main className="flex-1 flex overflow-hidden p-2 md:p-3 gap-3">
         
@@ -407,9 +471,9 @@ export function MainClient() {
           {sidebarOpen && (
             <motion.aside 
               initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 320, opacity: 1 }}
+              animate={{ width: 310, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.18 }}
               className="shrink-0 h-full flex flex-col bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-3 shadow-2xs overflow-hidden"
             >
               <div className="flex-1 flex flex-col min-h-0 gap-3">
@@ -500,9 +564,9 @@ export function MainClient() {
         </AnimatePresence>
 
         {/* ========================================================================= */}
-        {/* RIGHT PANEL: Pure scrollable output viewport (No redundant top headers) */}
+        {/* RIGHT PANEL: Pure scrollable output viewport */}
         {/* ========================================================================= */}
-        <section className="flex-1 h-full overflow-y-auto bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-4 shadow-2xs flex flex-col">
+        <section className="flex-1 h-full overflow-hidden bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-3 md:p-4 shadow-2xs flex flex-col">
           
           {results.length === 0 ? (
             <div className="flex-1 min-h-[300px] flex flex-col items-center justify-center text-zinc-400 text-center">
@@ -513,54 +577,41 @@ export function MainClient() {
               </p>
             </div>
           ) : (
-            <div className="flex-1">
+            <div className="flex-1 h-full overflow-hidden">
               
-              {/* 1. SLIDESHOW VIEW MODE */}
+              {/* ========================================================================= */}
+              {/* 1. SLIDESHOW VIEW MODE (HORIZONTAL STACK: DETAILS 40% ON LEFT, IMAGE 60% ON RIGHT) */}
+              {/* ========================================================================= */}
               {viewMode === 'slideshow' && (
-                <div className="flex flex-col gap-4 max-w-4xl mx-auto py-1">
+                <div className="h-full w-full flex flex-col md:flex-row gap-3 overflow-hidden">
                   
-                  {/* Slideshow Photo Container */}
-                  <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-zinc-950 border border-zinc-200 dark:border-zinc-800/80 shadow group">
-                    <img 
-                      src={getImageSrc(results[slideIndex])} 
-                      className="w-full h-full object-contain bg-zinc-950" 
-                      alt={`Slide ${slideIndex + 1}`} 
-                    />
-
-                    {/* Navigation Arrows */}
-                    <button 
-                      onClick={() => setSlideIndex(prev => (prev > 0 ? prev - 1 : results.length - 1))}
-                      className="absolute left-2.5 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-all shadow"
-                      title="Previous Photo"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-
-                    <button 
-                      onClick={() => setSlideIndex(prev => (prev < results.length - 1 ? prev + 1 : 0))}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-all shadow"
-                      title="Next Photo"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-
-                    {/* Slide Badge */}
-                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-zinc-200 border border-zinc-700/60 shadow">
-                      {slideIndex + 1} / {results.length}
+                  {/* Left: Details / Report (40% width, independently scrollable) */}
+                  <div className="w-full md:w-[40%] h-full overflow-y-auto bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 md:p-5 flex flex-col justify-start">
+                    <div className="pb-2.5 mb-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        {results[slideIndex].fileName || `Photo #${slideIndex + 1}`} Inspection
+                      </span>
                     </div>
+                    <FormattedReport description={results[slideIndex].description} />
                   </div>
 
-                  {/* Report Breakdown Displayed Neatly Below Slideshow Photo */}
-                  <div className="bg-zinc-50 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-5 shadow-2xs">
-                    <FormattedReport description={results[slideIndex].description} />
+                  {/* Right: Inspection Image (60% width, pristine ratio on dark canvas) */}
+                  <div className="w-full md:w-[60%] h-full bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center p-2 overflow-hidden relative shadow-inner">
+                    <img 
+                      src={getImageSrc(results[slideIndex])} 
+                      className="w-full h-full object-contain max-h-full rounded-lg" 
+                      alt={`Slide ${slideIndex + 1}`} 
+                    />
                   </div>
 
                 </div>
               )}
 
+              {/* ========================================================================= */}
               {/* 2. HORIZONTAL CARD LIST VIEW */}
+              {/* ========================================================================= */}
               {viewMode === 'list' && (
-                <div className="flex flex-col gap-4">
+                <div className="h-full overflow-y-auto pr-1 flex flex-col gap-4">
                   {results.map((res, i) => (
                     <motion.div 
                       key={i}
@@ -590,9 +641,11 @@ export function MainClient() {
                 </div>
               )}
 
+              {/* ========================================================================= */}
               {/* 3. BALANCED GRID VIEW */}
+              {/* ========================================================================= */}
               {viewMode === 'grid' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="h-full overflow-y-auto pr-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                   {results.map((res, i) => (
                     <div 
                       key={i} 
@@ -628,24 +681,22 @@ export function MainClient() {
 
 // Clean, professional report parser that structures Condition, Dirt, and Damages
 function FormattedReport({ description }: { description: string }) {
-  if (!description) {
-    return <p className="text-xs text-zinc-400">No report generated.</p>
-  }
+  const text = cleanInspectionText(description)
 
   const hasStructuredSections = 
-    description.includes('Condition Overview') || 
-    description.includes('Excessive Dirt') || 
-    description.includes('Damages Details')
+    text.includes('Condition Overview') || 
+    text.includes('Excessive Dirt') || 
+    text.includes('Damages Details')
 
   if (!hasStructuredSections) {
     return (
       <div className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap font-sans">
-        {description}
+        {text}
       </div>
     )
   }
 
-  const sections = description.split(/(?=\*\*?[A-Z][a-zA-Z\s]+(?:Overview|Details|Condition)\*?\*?)/g)
+  const sections = text.split(/(?=\*\*?[A-Z][a-zA-Z\s]+(?:Overview|Details|Condition)\*?\*?)/g)
 
   return (
     <div className="space-y-2.5 text-xs">

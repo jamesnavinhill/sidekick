@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
-    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.22);
+    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.4);
     --scrollbar-track: transparent;
   }
 
@@ -16,6 +18,11 @@
   html, body {
     height: 100%;
     overflow: hidden;
+    background-color: #f4f4f5;
+  }
+
+  .dark html, .dark body, html.dark, body.dark {
+    background-color: #09090b;
   }
 
   * {
